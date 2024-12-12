@@ -5,10 +5,16 @@ import { fetchInvoiceById, fetchCustomers } from "@/app/lib/data";
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const id = params.id;
-  const [invoice, customers] = await Promise.all([
-    fetchInvoiceById(id),
-    fetchCustomers(),
-  ]);
+
+  try {
+    const [invoice, customers] = await Promise.all([
+      fetchInvoiceById(id),
+      fetchCustomers(),
+    ]);
+  } catch (error) {
+    console.error(`Error Fetching invoice: ${error}`);
+    throw new Error("could not fetch invoice by id");
+  }
 
   return (
     <main>
