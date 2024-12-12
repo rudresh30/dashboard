@@ -6,15 +6,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const id = params.id;
 
-  try {
-    const [invoice, customers] = await Promise.all([
-      fetchInvoiceById(id),
-      fetchCustomers(),
-    ]);
-  } catch (error) {
-    console.error(`Error Fetching invoice: ${error}`);
-    throw new Error("could not fetch invoice by id");
-  }
+  const [invoice, customers] = await Promise.all([
+    fetchInvoiceById(id),
+    fetchCustomers(),
+  ]);
 
   return (
     <main>
